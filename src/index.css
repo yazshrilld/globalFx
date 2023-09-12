@@ -1,0 +1,45 @@
+@tailwind base;
+
+@layer base {
+  html {
+    @apply text-neutral-800;
+  }
+  html.dark {
+    @apply text-neutral-50;
+    @apply bg-neutral-800;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Gotham";
+  src: url("./font/Gotham/Gotham-Light.otf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+}
+
+@font-face {
+  font-family: "Gotham";
+  src: url("./font/Gotham/Gotham-Book.otf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1;
+}
+
+@font-face {
+  font-family: "Gotham";
+  src: url("./font/Gotham/Gotham-Medium.otf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Gotham", "Arial Narrow", Arial, sans-serif !important;
+}
