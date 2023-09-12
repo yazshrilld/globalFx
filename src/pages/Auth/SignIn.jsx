@@ -1,6 +1,6 @@
 const SignIn = () => {
   return (
-    <><h1>My Sign In for FX</h1></>
+    <><h1>My Sign In for FX Blotal</h1></>
   )
 }
 
