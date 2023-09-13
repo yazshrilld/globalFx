@@ -43,3 +43,33 @@
   box-sizing: border-box;
   font-family: "Gotham", "Arial Narrow", Arial, sans-serif !important;
 }
+
+.mobile-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.laptop-icon {
+  width: 6.25rem;
+  height: 6.25rem;
+}
+
+@screen xl {
+  .layout {
+    grid-template-columns: 371px 1fr;
+  }
+
+  .content {
+    max-width: calc(100vw - 371px);
+  }
+}
+
+/* Remove input background color on paste */
+input:-webkit-autofill {
+  -webkit-background-clip: text !important;
+}
