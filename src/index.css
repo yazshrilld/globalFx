@@ -44,6 +44,20 @@
   font-family: "Gotham", "Arial Narrow", Arial, sans-serif !important;
 }
 
+.nav-icon svg path {
+  fill: #fdb815;
+}
+
+.nav-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: #fdb815;
+}
+
 .mobile-screen {
   display: flex;
   flex-direction: column;
@@ -57,16 +71,6 @@
 .laptop-icon {
   width: 6.25rem;
   height: 6.25rem;
-}
-
-@screen xl {
-  .layout {
-    grid-template-columns: 371px 1fr;
-  }
-
-  .content {
-    max-width: calc(100vw - 371px);
-  }
 }
 
 /* Remove input background color on paste */

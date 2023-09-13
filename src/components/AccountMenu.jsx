@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { ReactComponent as UserIcon } from "../assets/svg/Avatar.svg";
-import { ReactComponent as ChevronDownIcon } from "../assets/svg/expand_more.svg";
-import { ReactComponent as ProvidusLogo } from "../assets/svg/providus.svg";
-import { ReactComponent as Hamburger } from "../assets/svg/hamburger.svg";
-import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import { ReactComponent as UserIcon } from "assets/svg/Avatar.svg";
+import { ReactComponent as ChevronDownIcon } from "assets/svg/expand_more.svg";
+import { UserContext } from "context/UserContext";
+import { useContext } from "react";
+import { useSessionStorage } from "Hooks/useSessionStorage";
+import { useNavigate } from "react-router-dom";
 
 const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const { removeItem } = useSessionStorage();
+  const { user, setIsLoggedOut } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleClick = (event) => {
@@ -22,26 +27,37 @@ const AccountMenu = () => {
     setAnchorEl(null);
   };
 
+  const handleLogOut = () => {
+    setIsLoggedOut(true);
+    removeItem("tk");
+    removeItem("role");
+
+    navigate("/auth/sign-in", { replace: true });
+  };
+
   return (
     <>
-      <div className="sticky top-0 z-[20] flex justify-between bg-white h-[91px] px-[30px] xl:px-[55px]">
-        <div className="flex items-center space-x-4 xl:hidden">
-          <Hamburger className="" />
-          <ProvidusLogo className="w-[100px] h-[40px]" />
-        </div>
-        <div className="ml-auto w-fit flex items-center" onClick={handleClick}>
-          <div sx={{ ml: "1.75rem" }}>
+      <Box>
+        <Stack
+          direction="row"
+          alignItems="center"
+          onClick={handleClick}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
+          <Box sx={{ ml: "1.75rem" }}>
             <Avatar sx={{ width: "3.18rem", height: "3.18rem" }}>
               <UserIcon />
             </Avatar>
-          </div>
-          <div>
+          </Box>
+          <Box>
             <IconButton>
               <ChevronDownIcon />
             </IconButton>
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Stack>
+      </Box>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -81,13 +97,15 @@ const AccountMenu = () => {
           </Avatar>
           <div className="ml-2">
             <p className="font-semibold text-base text-font capitalize">
-              Yazid
+              {user?.name ?? user?.nameOfLawFirm}
             </p>
-            <p className="text-sm text-fontLight font-medium">Musa</p>
+            <p className="text-sm text-fontLight font-medium">{user?.role}</p>
           </div>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={console.log("I am logged out")}></MenuItem>
+        <MenuItem onClick={handleLogOut}>
+          <span className="font-medium">Logout</span>
+        </MenuItem>
       </Menu>
     </>
   );
