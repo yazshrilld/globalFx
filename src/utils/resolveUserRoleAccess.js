@@ -6,5 +6,6 @@ export const resolveUserRoleAccess = (role) => {
     "Team Lead, Legal Services": 5,
     "Application Developer": 4,
   };
-  return ROLES_MAP?.[role] ?? null;
+
+  return ROLES_MAP?.[role] ?? null; //this is using the object name to get the value
 };
