@@ -30,22 +30,38 @@ const SignIn = () => {
     "Team Lead, Legal Services",
   ];
 
-  const handleSubmit = () => {
-    
+  const handleSubmit = (values) => {
+    if(values.userName) {
+      login(values)
+    }
   }
-
-  const handleShowPasswordVisibility = () => {
-    setShowPassword((prevS) => !prevS);
-  };
 
   const formik = useFormik({
     initialValues: {
       userName: "",
       password: "",
     },
-    onSubmit: "",
-    validationSchema: "",
+    onSubmit: handleSubmit,
+    validationSchema: LoginSchema,
   })
+
+  const {mutate: login, isLoading: PIsLoading} = useMutation({
+    mutationKey: ["login"],
+    mutationFn: providusLoginFn,
+    onSuccess: (data) => {
+      console.log("From On Success: ", {data});
+    },
+    onError: (error) => {
+      console.log("From On Error: ", {error});
+    }
+  })
+
+  const handleShowPasswordVisibility = () => {
+    setShowPassword((prevS) => !prevS);
+  };
+
+  console.log("My Values: ", formik.values);
+  
 
   return (
     <>
@@ -53,7 +69,7 @@ const SignIn = () => {
       <p className="text-[#C2C2C2] text-sm mb-6">
         Enter your valid login credentials
       </p>
-      <form className="space-y-7">
+      <form onSubmit={formik.handleSubmit} className="space-y-7">
         <InputFormField
           label="Username"
           placeholder="Username"
@@ -93,11 +109,11 @@ const SignIn = () => {
 
         <BaseButton
           type="submit"
-          // isLoading={PIsLoading || SIsLoading}
-          isLoading={false}
+          isLoading={PIsLoading}
+          // isLoading={false}
           customStyle="w-full "
         >
-          Login
+          Logins
         </BaseButton>
       </form>
     </>
