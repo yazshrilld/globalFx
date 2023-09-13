@@ -1,9 +1,9 @@
 import { ReactComponent as PageIcon } from "../../assets/svg/coffee_img.svg";
+import { Outlet } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Logo from "../../assets/svg/logo2.png";
-import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
   return (

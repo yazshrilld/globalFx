@@ -1,13 +1,38 @@
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { providusLoginFn } from "utils/Api/auth";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { LoginSchema } from "utils/Yup/YupSchema";
+import { useSessionStorage } from "Hooks/useSessionStorage";
 import { useState, useEffect } from "react";
 import { ReactComponent as EyeOpenIcon } from "assets/svg/eye-open.svg";
 import { ReactComponent as EyeClosedIcon } from "assets/svg/eye-closed.svg";
 import InputFormField from "components/InputFormFIeld/InputFormField";
 import BaseButton from "components/BaseButton/BaseButton";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const { setSessionStorage } = useSessionStorage();
   const [showPassword, setShowPassword] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    open: false,
+    severity: "success",
+    message: "",
+  })
+
+  const STAFF_ROLE = [
+    "Application Developer",
+    "Customer Service Officer",
+    "Legal Officer",
+    "Team Lead, Legal Services",
+  ];
+
+  const handleSubmit = () => {
+    
+  }
 
   const handleShowPasswordVisibility = () => {
     setShowPassword((prevS) => !prevS);
