@@ -1,26 +1,67 @@
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { providusLoginFn } from "utils/Api/auth";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { LoginSchema } from "utils/Yup/YupSchema";
+import { useSessionStorage } from "Hooks/useSessionStorage";
 import { useState, useEffect } from "react";
 import { ReactComponent as EyeOpenIcon } from "assets/svg/eye-open.svg";
 import { ReactComponent as EyeClosedIcon } from "assets/svg/eye-closed.svg";
 import InputFormField from "components/InputFormFIeld/InputFormField";
 import BaseButton from "components/BaseButton/BaseButton";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const { setSessionStorage } = useSessionStorage();
   const [showPassword, setShowPassword] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    open: false,
+    severity: "success",
+    message: "",
+  })
 
-  const handleShowPasswordVisibility = () => {
-    setShowPassword((prevS) => !prevS);
-  };
+  const STAFF_ROLE = [
+    "Application Developer",
+    "Customer Service Officer",
+    "Legal Officer",
+    "Team Lead, Legal Services",
+  ];
+
+  const handleSubmit = (values) => {
+    if(values.userName) {
+      login(values)
+    }
+  }
 
   const formik = useFormik({
     initialValues: {
       userName: "",
       password: "",
     },
-    onSubmit: "",
-    validationSchema: "",
+    onSubmit: handleSubmit,
+    validationSchema: LoginSchema,
   })
+
+  const {mutate: login, isLoading: PIsLoading} = useMutation({
+    mutationKey: ["login"],
+    mutationFn: providusLoginFn,
+    onSuccess: (data) => {
+      console.log("From On Success: ", {data});
+    },
+    onError: (error) => {
+      console.log("From On Error: ", {error});
+    }
+  })
+
+  const handleShowPasswordVisibility = () => {
+    setShowPassword((prevS) => !prevS);
+  };
+
+  console.log("My Values: ", formik.values);
+  
 
   return (
     <>
@@ -28,7 +69,7 @@ const SignIn = () => {
       <p className="text-[#C2C2C2] text-sm mb-6">
         Enter your valid login credentials
       </p>
-      <form className="space-y-7">
+      <form onSubmit={formik.handleSubmit} className="space-y-7">
         <InputFormField
           label="Username"
           placeholder="Username"
@@ -68,11 +109,11 @@ const SignIn = () => {
 
         <BaseButton
           type="submit"
-          // isLoading={PIsLoading || SIsLoading}
-          isLoading={false}
+          isLoading={PIsLoading}
+          // isLoading={false}
           customStyle="w-full "
         >
-          Login
+          Logins
         </BaseButton>
       </form>
     </>
