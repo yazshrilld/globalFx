@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import { ReactComponent as CloseIcon } from "assets/svg/close.svg";
 import { ReactComponent as EyeOpenIcon } from "assets/svg/eye-open.svg";
 import { UserContext } from "context/UserContext";
-import { updateRequestStatusFn } from "utils/ApiFactory/request";
 import * as Yup from "yup";
 import Button from "components/BaseButton";
 import Modal from "@mui/material/Modal";
@@ -39,22 +38,7 @@ const UpdateSolicitorRequest = ({
   const solicitorEmail = user.officialEmailAddressOfFirm;
   const [showSubmitBtn, setShowSubmitBtn] = useState(false);
 
-  const { mutate: updateRequestStatus } = useMutation({
-    mutationFn: updateRequestStatusFn,
-    onSuccess: () => {
-      setShowSubmitBtn(true);
-      showToast({
-        severity: "success",
-        message: "Request has been updated successfully",
-      });
-    },
-    onError: (error) => {
-      showToast({
-        severity: "error",
-        message: error?.response?.data?.detail || "Could not process request.",
-      });
-    },
-  });
+ 
 
   const validationSchema = Yup.object({
     selectStatus: Yup.string().required("Please Select a status"),
@@ -68,10 +52,6 @@ const UpdateSolicitorRequest = ({
         requestStatus: values.selectStatus,
         staffUsername: solicitorEmail,
       };
-      updateRequestStatus({
-        id: requestId,
-        payload,
-      });
     },
   });
 
