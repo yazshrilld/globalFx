@@ -18,6 +18,9 @@ import Warning from "components/solicitors/Warning";
 import Button from "components/BaseButton";
 import DateSearchFilter from "components/DateSearchFilter/DateSearchFilter";
 import InProgressSolicitor from "components/solicitors/InProgressSolicitor";
+import { fxDataColumns } from "assets/data";
+import { FXTX_DUMMY_DATA } from "assets/data";
+import { useSessionStorage } from "Hooks/useSessionStorage";
 
 const DashboardNew = () => {
   const { user } = useContext(UserContext);
@@ -27,6 +30,8 @@ const DashboardNew = () => {
   // const userEmail = "ymusa@providusbank.com";
   const userRole = sessionStorage.getItem("__role");
   const myRole = resolveUserRoleAccess(userRole);
+  const data = FXTX_DUMMY_DATA;
+  const fxData = data[0]?.data?.blotter;
   // const myRole = resolveUserRoleAccess(user.role);
 
   const [page, setPage] = useState(0);
@@ -34,6 +39,9 @@ const DashboardNew = () => {
   const [activeCreatedRequest, setActiveCreatedRequest] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const { getSessionStorage } = useSessionStorage;
+  const fxValue = sessionStorage.getItem("start");
+  console.log({ fxValue });
 
   // const [allSelectedRows, setAllSelectedRows] = useState([]);
   // const branchCode = sessionStorage.getItem("__brc");
@@ -52,6 +60,12 @@ const DashboardNew = () => {
     // 4: csoDashboardTableColumns,
     // 4: LegalOfficerDashboardTableColumns,
   };
+
+  const {} = useQuery({
+    queryKey: ["fetch-fx", {
+      
+    }]
+  })
 
   const toggleModal = (_, _1, row) => {
     setActiveCreatedRequest(row);
@@ -137,16 +151,24 @@ const DashboardNew = () => {
 
       <div className="bg-white rounded-[10px] mb-8">
         <div className="flex items-center justify-between px-8">
-          <h1 className="text-xl font-semibold">DashboardNew</h1>
+          <div className="relative">
+            <h1 className="text-xl font-semibold">Dashboard</h1>
+            <button
+              className={`absolute right-0 top-0 -translate-y-2 translate-x-4 h-[12px] w-[12px]  border-2 border-solid border-blue rounded-[50%] ${
+                fxValue === "true" ? "bg-green-500" : "bg-red-500"
+              }`}
+            ></button>
+          </div>
           <div className="flex items-center justify-between pb-4 p-8 gap-14">
             <DateSearchFilter />
           </div>
         </div>
 
         <BaseTable
-          rows={[]}
-          // rows={data?.rows || []}
-          columns={tableColumns[myRole]}
+          // rows={[]}
+          rows={fxData || []}
+          columns={fxDataColumns}
+          // columns={tableColumns[myRole]}
           page={page}
           showCheckbox
           setPage={setPage}
