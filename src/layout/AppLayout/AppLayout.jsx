@@ -47,8 +47,8 @@ const AppLayout = ({ handleSelection }) => {
         }}
       >
         <Box className="nav-bar bg-blue-500">
-          <Box className="nav-bar-user-profile-notification bg-red-500">
-            <Box className="nav-bar-accountMenu top-0 sticky bg-green-500">
+          <Box className="nav-bar-user-profile-notification">
+            <Box className="nav-bar-accountMenu top-0 sticky">
               <AccountMenu />
             </Box>
           </Box>

@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { getAllSolicitorFn } from "utils/ApiFactory/solicitors";
-import { assignRequestToSolicitorFn } from "utils/ApiFactory/request";
 import { UserContext } from "context/UserContext";
 import { Checkbox } from "@mui/material";
 import { ReactComponent as EyeOpenIcon } from "assets/svg/eye-open.svg";
@@ -29,51 +27,9 @@ const AsReAssignSlicitorRequest = ({ open, createdRequest, handleClose }) => {
   const sortBy = "solicitorApprovalStatus";
   const sortOrder = "ASC";
 
-  const { data: allSolicitors } = useQuery({
-    queryKey: ["all-solicitors", sortBy, sortOrder],
-    queryFn: () =>
-      getAllSolicitorFn({
-        page: 0,
-        size: 50,
-        sortBy,
-        sortOrder,
-      }),
-    select: (transformedData) => {
-      const transform = transformedData.data.data.content.map(
-        ({ solicitorId, nameOfLawFirm, solicitorApprovalStatus }) => ({
-          solicitorId,
-          nameOfLawFirm,
-          solicitorApprovalStatus,
-        })
-        //This map here shows that you dont necessarily have to return a div, you can alo return values
-      );
-      return transform;
-    },
-    onError: (error) => {
-      showToast({
-        severity: "error",
-        message: error?.response?.data?.detail || "Could not process request..",
-      });
-    },
-  });
+  
 
-  const { mutate: assignSolicitor, isLoading } = useMutation({
-    // mutationKey: "assignSolicitor",
-    mutationFn: assignRequestToSolicitorFn,
-    onSuccess: () => {
-      handleClose();
-      showToast({
-        severity: "success",
-        message: "Request successfully assigned",
-      });
-    },
-    onError: (error) => {
-      showToast({
-        severity: "error",
-        message: error?.response?.data?.detail || "Could not process request..",
-      });
-    },
-  });
+  
 
   const validationSchema = Yup.object({
     selectSolicitor: Yup.string().required("Please Select a solicitor"),
@@ -83,11 +39,7 @@ const AsReAssignSlicitorRequest = ({ open, createdRequest, handleClose }) => {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      assignSolicitor({
-        id: requestId,
-        solicitorId: JSON.parse(values.selectSolicitor).solicitorId,
-        staffUsername: userEmail,
-      });
+      
       // console.log(
       //   "SolicitorId: ",
       //   JSON.parse(values.selectSolicitor)?.solicitorId
@@ -242,24 +194,7 @@ const AsReAssignSlicitorRequest = ({ open, createdRequest, handleClose }) => {
                       Select Solicitor
                     </option>
 
-                    {allSolicitors?.map(
-                      ({
-                        solicitorId,
-                        nameOfLawFirm,
-                        solicitorApprovalStatus,
-                      }) => (
-                        <option
-                          key={solicitorId}
-                          value={JSON.stringify({
-                            solicitorId,
-                            solicitorApprovalStatus,
-                            nameOfLawFirm,
-                          })}
-                        >
-                          {nameOfLawFirm}
-                        </option>
-                      )
-                    )}
+                    
                   </select>
                   {formik.touched.selectSolicitor &&
                   formik.errors.selectSolicitor ? (
@@ -281,7 +216,6 @@ const AsReAssignSlicitorRequest = ({ open, createdRequest, handleClose }) => {
                   <Button
                     customStyle="w-[100px] inline-block rounded-[10px] ml-[15px] self-end h-[38px]"
                     variant="primary"
-                    isLoading={isLoading}
                     type="submit"
                   >
                     Assign
