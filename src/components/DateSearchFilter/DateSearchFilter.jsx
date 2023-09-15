@@ -5,6 +5,11 @@ import { ReactComponent as ResetIcon } from "assets/svg/restart_alt.svg";
 import * as Yup from "yup";
 import InputFormField from "components/InputFormField";
 import IconButton from "@mui/material/IconButton";
+import Button from "components/BaseButton";
+import { fetchFxFn } from "utils/ApiFactory/fxTxApi";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
 const DATE_FIELD_VALUES = {
   rawStartDate: "",
@@ -14,8 +19,8 @@ const DATE_FIELD_VALUES = {
 const validationSchema = Yup.object().shape({
   rawStartDate: Yup.date().when("rawEndDate", (rawEndDate, schema) => {
     return schema.test({
-      test: (rawStartDate) => rawStartDate < rawEndDate,
-      message: () => "Start date cannot be greater than end date",
+      test: (rawStartDate) => rawStartDate,
+      message: () => "Start date cannot be lesser than end date",
     });
   }),
   rawEndDate: Yup.date().max(
@@ -25,9 +30,26 @@ const validationSchema = Yup.object().shape({
 });
 
 const DateSearchFilter = () => {
+  const { data: FetchFx, isFetching, refetch } = useQuery({
+    queryKey: ["date-fetch-fx"],
+    queryFn: () =>
+      fetchFxFn({
+        startdate: dayjs(formik.values.rawStartDate).format("DD-MMM-YYYY"),
+        enddate: dayjs(formik.values.rawEndDate).format("DD-MMM-YYYY"),
+      }),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    select: (data) => {
+      console.log(data);
+    },
+    enabled: false,
+  });
+
   const handleSubmit = async (values, { resetForm }) => {
-    const {rawStartDate, rawEndDate, ...rest} = values
-    console.log("Search Values: ",  ...rest );
+    // const { rawStartDate, rawEndDate } = values;
+    refetch()
+    // console.log("Search Values: ", ...rest);
   };
 
   const formik = useFormik({
@@ -36,11 +58,14 @@ const DateSearchFilter = () => {
     onSubmit: handleSubmit,
   });
 
+  
+
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="flex items-center gap-3 justify-between">
         <IconButton className="">
-          <TodayIcon className="w-7 h-7"/>
+          <TodayIcon className="w-7 h-7" />
         </IconButton>
         <div className="min-h[100px] flex items-center flex-col">
           <InputFormField
@@ -66,12 +91,23 @@ const DateSearchFilter = () => {
             error={formik.errors.rawEndDate}
           />
         </div>
-        <IconButton className="">
-          <DoneIcon className="w-7 h-7"/>
+        <Button
+          type="submit"
+          customStyle="w-[100px] inline-block rounded-[10px] px-2 text-black self-end h-[38px]"
+          variant="primary"
+          // onClick={() => handlePopUp("start")}
+          onClick={console.log("I am clicked")}
+          isLoading={isFetching}
+          disabled={!formik.values.rawEndDate}
+        >
+          Search
+        </Button>
+        {/* <IconButton className="">
+          <DoneIcon className="w-7 h-7" />
         </IconButton>
         <IconButton className="">
-          <ResetIcon className="w-7 h-7"/>
-        </IconButton>
+          <ResetIcon className="w-7 h-7" />
+        </IconButton> */}
       </div>
     </form>
   );

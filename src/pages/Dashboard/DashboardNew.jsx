@@ -21,6 +21,7 @@ import InProgressSolicitor from "components/solicitors/InProgressSolicitor";
 import { fxDataColumns } from "assets/data";
 import { FXTX_DUMMY_DATA } from "assets/data";
 import { useSessionStorage } from "Hooks/useSessionStorage";
+import { fetchFxFn } from "utils/ApiFactory/fxTxApi";
 
 const DashboardNew = () => {
   const { user } = useContext(UserContext);
@@ -33,6 +34,7 @@ const DashboardNew = () => {
   const data = FXTX_DUMMY_DATA;
   const fxData = data[0]?.data?.blotter;
   // const myRole = resolveUserRoleAccess(user.role);
+  console.log("Length Of Fx :", fxData.length);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -61,11 +63,25 @@ const DashboardNew = () => {
     // 4: LegalOfficerDashboardTableColumns,
   };
 
-  const {} = useQuery({
-    queryKey: ["fetch-fx", {
-      
-    }]
-  })
+  const { data: FetchFx, isLoading } = useQuery({
+    queryKey: [
+      "fetch-fx-now",
+      {
+        // startdate: new Date(),
+        // enddate: new Date(),
+      },
+    ],
+    queryFn: () =>
+      fetchFxFn({
+        startdate: new Date(),
+        enddate: new Date(),
+      }),
+    select: (data) => {
+      const rate = data?.data?.data?.current_fx_rate
+      sessionStorage.setItem("fxRate", rate)
+      console.log("From Select: ", {rate, data });
+    },
+  });
 
   const toggleModal = (_, _1, row) => {
     setActiveCreatedRequest(row);
@@ -163,6 +179,11 @@ const DashboardNew = () => {
             <DateSearchFilter />
           </div>
         </div>
+        {/* {
+          isLoading && (
+            <h1>Loading Data...</h1>
+          )
+        } */}
 
         <BaseTable
           // rows={[]}
@@ -177,8 +198,8 @@ const DashboardNew = () => {
           setRowsPerPage={setRowsPerPage}
           actionOptions={["View Details"]}
           actionItemOnClick={toggleModal}
-          totalPage={0}
-          // totalPage={data?.totalCount ?? 0}
+          // totalPage={}
+          totalPage={fxData?.length}
           checkboxOnChange={checkboxOnChange}
           // allCheckboxOnChange={allCheckboxOnChange}
           search={search}

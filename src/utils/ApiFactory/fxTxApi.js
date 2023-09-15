@@ -1,8 +1,9 @@
+import dayjs from "dayjs";
 import Axios from "utils/axios";
 
 export const fetchFxFn = async ({ startdate, enddate }) => {
   const res = await Axios.get(
-    `/fetch?startdate=${startdate}&enddate=${enddate}`
+    `/fetch?startdate=${dayjs(startdate).format('DD-MMM-YYYY')}&enddate=${dayjs(enddate).format('DD-MMM-YYYY')}`
   );
   return res;
 };

@@ -34,7 +34,10 @@ const AppLayout = ({ handleSelection }) => {
     isStartLoading: false,
     isStopLoading: false,
   });
-  const [msg, setMsg] = useState("")
+  const [msg, setMsg] = useState("");
+  const fxRates = sessionStorage.getItem("fxRate");
+  
+
 
   const startFxFn = async () => {
     const trimStr = (str) => {
@@ -60,7 +63,7 @@ const AppLayout = ({ handleSelection }) => {
       });
       if (res) {
         console.log({ res });
-        const successMessage = res?.data?.data?.responseMessage
+        const successMessage = res?.data?.data?.responseMessage;
         if (showPopUp.type === "start") {
           showToast({
             severity: "success",
@@ -71,17 +74,20 @@ const AppLayout = ({ handleSelection }) => {
             type: "",
           });
         }
-        sessionStorage.setItem("start", true)
+        sessionStorage.setItem("start", true);
         setMsg((prevS) => ({
           ...prevS,
           msg: trimStr(successMessage),
-        }))
+        }));
       }
     } catch (error) {
-      showToast({
-        severity: "error",
-        message: "Could not process confirmation.",
-      });
+      if (error) {
+        console.log("First Error: ", {error});
+        showToast({
+          severity: "error",
+          message: error?.response?.data?.data?.responseMessage || "Could not process request.",
+        });
+      }
     } finally {
       setApiRequest((prevS) => ({
         ...prevS,
@@ -118,13 +124,16 @@ const AppLayout = ({ handleSelection }) => {
             type: "",
           });
         }
-        sessionStorage.setItem("start", false)
+        sessionStorage.setItem("start", false);
       }
     } catch (error) {
-      showToast({
-        severity: "error",
-        message: "Could not process confirmation.",
-      });
+      if (error) {
+        console.log("First Error: ", {error});
+        showToast({
+          severity: "error",
+          message: error?.response?.data?.data?.responseMessage || "Could not process request.",
+        });
+      }
     } finally {
       setApiRequest((prevS) => ({
         ...prevS,
@@ -239,8 +248,10 @@ const AppLayout = ({ handleSelection }) => {
               </Button>
             </div>
           )}
-
-          <Box className="nav-bar-user-profile-notification">
+          <div className="ml-5 p-[16px_20px] bg-transparent rounded-[10px] shadow-md font-medium">
+            FX_RATE: {fxRates}
+          </div>
+          <Box className="nav-bar-user-profile-notification ml-auto">
             <Box className="nav-bar-accountMenu top-0 sticky">
               <AccountMenu />
             </Box>
