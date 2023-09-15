@@ -37,6 +37,8 @@ export default function BaseTable({
     setPage(0);
   };
 
+  console.log("MyRowsPagePer: ", rowsPerPage);
+
   const handleCheckboxChange = (data) => {
     checkboxOnChange(data);
   };
@@ -151,7 +153,11 @@ export default function BaseTable({
         rowsPerPageOptions={[10, 25, 100]}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
-      ></TablePagination>
+      >
+{
+  console.log({totalPage, rows})
+}
+      </TablePagination>
     </div>
   );
 }

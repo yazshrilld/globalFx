@@ -159,7 +159,7 @@ export const navigation = (role) => [
     icon: <DashboardIcon />,
     href: "/app/dashboard",
     role: true,
-  }
+  },
 ];
 
 // initial table values columns for creating a table
@@ -254,13 +254,6 @@ export const csoCreateRequestTableColumns = [
 
 // Legal table columns
 export const LegalOfficerDashboardTableColumns = [
-  // {
-  //   id: "Select",
-  //   label: <Checkbox />,
-  //   format: () => (
-  //       <Checkbox />
-  //   ),
-  // },
   { id: "companyName", label: "Company Name", minWidth: 120 },
   { id: "rcNumber", label: "RC Number", minWidth: 100 },
   {
@@ -1341,85 +1334,397 @@ export const SolicitorReportData = [
 
 export const DUMMY_SELECTED_ROWS = [
   {
-    "createdBy": "ymusa@providusbank.com",
-    "dateCreated": "2023-08-16 07:58:29",
-    "updatedBy": "ymusa@providusbank.com",
-    "dateUpdated": "2023-08-18 09:24:46",
-    "requestId": 24,
-    "companyName": "React Insurance",
-    "companyRegisteredAddress": "1, Arisile Street, Estate Avenue, Madueke LClose",
-    "companyRegistrationDate": "30-Aug-2023",
-    "rcNumber": "108121",
-    "companyType": "LIMITED_LIABILITY_COMPANY",
-    "shareholdingStructure": "42% rate increase",
-    "proprietorsName": null,
-    "secretaryName": null,
-    "proprietorsRegisteredAddress": null,
-    "directors": [
+    createdBy: "ymusa@providusbank.com",
+    dateCreated: "2023-08-16 07:58:29",
+    updatedBy: "ymusa@providusbank.com",
+    dateUpdated: "2023-08-18 09:24:46",
+    requestId: 24,
+    companyName: "React Insurance",
+    companyRegisteredAddress:
+      "1, Arisile Street, Estate Avenue, Madueke LClose",
+    companyRegistrationDate: "30-Aug-2023",
+    rcNumber: "108121",
+    companyType: "LIMITED_LIABILITY_COMPANY",
+    shareholdingStructure: "42% rate increase",
+    proprietorsName: null,
+    secretaryName: null,
+    proprietorsRegisteredAddress: null,
+    directors: [
+      {
+        directorName: "Eliot Sans",
+        directorResidentialAddress:
+          "1, Arisile Street, Estate Avenue, Madueke  Avenuee",
+      },
+      {
+        directorName: "Madueke Bright",
+        directorResidentialAddress:
+          "1o, Ogulawe Street, Estate Avenue, Madueke LClose",
+      },
+    ],
+    trustees: [],
+    reason: "Account Opening",
+    status: "ASSIGNED",
+    solicitor: {
+      createdBy: "ymusa@providusbank.com",
+      dateCreated: "2023-07-24 19:22:21",
+      updatedBy: "ymusa@providusbank.com",
+      dateUpdated: "2023-07-24 19:48:52",
+      solicitorId: 7,
+      nameOfLawFirm: "Ogba Cotjvpany",
+      address: "Ogba User",
+      officialEmailAddressOfFirm: "musa.yazid49@gmail.com",
+      nameOfPrincipalPartner: "Ogba Ogba",
+      bankAccountName: "Ogabausefulness",
+      bankAccountNumber: "5634567935",
+      solicitorApprovalStatus: "APPROVED",
+      role: "Solicitor",
+      mdApproval: "",
+    },
+    document: {
+      cacDocument:
+        "C:/Users/nagbara/src/main/resources/static/react insurance/Receipt002450528152556.pdf",
+      document2:
+        "C:/Users/nagbara/src/main/resources/static/react insurance/Receipt002450528152556.pdf",
+      document3: "",
+      document4: "",
+      document5: "",
+    },
+    solicitorReport: {
+      createdBy: "ymusa@providusbank.com",
+      dateCreated: "2023-08-16 07:58:29",
+      updatedBy: null,
+      dateUpdated: null,
+      companyName: "React Insurance",
+      companyRegisteredAddress:
+        "1, Arisile Street, Estate Avenue, Madueke LClose",
+      companyRegistrationDate: "30-Aug-2023",
+      rcNumber: "108121",
+      companyType: "LIMITED_LIABILITY_COMPANY",
+      shareholdingStructure: "42% rate increase",
+      proprietorsName: null,
+      secretaryName: null,
+      proprietorsRegisteredAddress: null,
+      directors: [
         {
-            "directorName": "Eliot Sans",
-            "directorResidentialAddress": "1, Arisile Street, Estate Avenue, Madueke  Avenuee"
+          directorName: "Eliot Sans",
+          directorResidentialAddress:
+            "1, Arisile Street, Estate Avenue, Madueke  Avenuee",
         },
         {
-            "directorName": "Madueke Bright",
-            "directorResidentialAddress": "1o, Ogulawe Street, Estate Avenue, Madueke LClose"
-        }
-    ],
-    "trustees": [],
-    "reason": "Account Opening",
-    "status": "ASSIGNED",
-    "solicitor": {
-        "createdBy": "ymusa@providusbank.com",
-        "dateCreated": "2023-07-24 19:22:21",
-        "updatedBy": "ymusa@providusbank.com",
-        "dateUpdated": "2023-07-24 19:48:52",
-        "solicitorId": 7,
-        "nameOfLawFirm": "Ogba Cotjvpany",
-        "address": "Ogba User",
-        "officialEmailAddressOfFirm": "musa.yazid49@gmail.com",
-        "nameOfPrincipalPartner": "Ogba Ogba",
-        "bankAccountName": "Ogabausefulness",
-        "bankAccountNumber": "5634567935",
-        "solicitorApprovalStatus": "APPROVED",
-        "role": "Solicitor",
-        "mdApproval": ""
+          directorName: "Madueke Bright",
+          directorResidentialAddress:
+            "1o, Ogulawe Street, Estate Avenue, Madueke LClose",
+        },
+      ],
+      trustees: [],
+      solicitorReportDocument1: null,
+      solicitorReportDocument2: null,
+      solicitorComment: null,
     },
-    "document": {
-        "cacDocument": "C:/Users/nagbara/src/main/resources/static/react insurance/Receipt002450528152556.pdf",
-        "document2": "C:/Users/nagbara/src/main/resources/static/react insurance/Receipt002450528152556.pdf",
-        "document3": "",
-        "document4": "",
-        "document5": ""
+    action: "ActionButton",
+  },
+];
+
+export const LOGIN_DUMMY_DATA = [
+  {
+    status: "success",
+    message: "Login successful",
+    data: {
+      emplId: "221005",
+      unit: {
+        name: "Application Development",
+        id: 1,
+      },
+      role: "Application Developer",
+      roleaccess: "",
+      empName: "MUSA, YAZID TOPA",
+      id: 1303,
+      responseMessage: "Authenticated Successfully",
+      department: {
+        name: "Information Technology",
+        id: 1,
+      },
+      braCode: {
+        name: "Head Office",
+        id: 1,
+      },
+      supervisor: {
+        name: "NDUKWE, NNAMDI NDUKWE",
+        id: 442,
+      },
+      responseCode: "00",
     },
-    "solicitorReport": {
-        "createdBy": "ymusa@providusbank.com",
-        "dateCreated": "2023-08-16 07:58:29",
-        "updatedBy": null,
-        "dateUpdated": null,
-        "companyName": "React Insurance",
-        "companyRegisteredAddress": "1, Arisile Street, Estate Avenue, Madueke LClose",
-        "companyRegistrationDate": "30-Aug-2023",
-        "rcNumber": "108121",
-        "companyType": "LIMITED_LIABILITY_COMPANY",
-        "shareholdingStructure": "42% rate increase",
-        "proprietorsName": null,
-        "secretaryName": null,
-        "proprietorsRegisteredAddress": null,
-        "directors": [
-            {
-                "directorName": "Eliot Sans",
-                "directorResidentialAddress": "1, Arisile Street, Estate Avenue, Madueke  Avenuee"
-            },
-            {
-                "directorName": "Madueke Bright",
-                "directorResidentialAddress": "1o, Ogulawe Street, Estate Avenue, Madueke LClose"
-            }
-        ],
-        "trustees": [],
-        "solicitorReportDocument1": null,
-        "solicitorReportDocument2": null,
-        "solicitorComment": null
+  },
+];
+
+export const FXTX_DUMMY_DATA = [
+  {
+    status: "success",
+    message: "Fetch Successful",
+    data: {
+      blotter: [
+        {
+          date_added: "9/12/2023 3:04:06 PM",
+          action: "ActionButton",
+          amount: 120.0,
+          referenceNo: "test-12344Xs",
+          narration: "Sell Fx to Bank with ref: test-12344Xs",
+          channel: 2,
+          source_account: "5900085856",
+          fx_rate: 500.0,
+          equ_amount: 60000.0,
+          rowid: 1,
+          destination_account: "1700085845",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+        {
+          date_added: "9/12/2023 3:05:20 PM",
+          action: "ActionButton",
+          amount: 1000.0,
+          referenceNo: "test-4567890-098",
+          narration: "Sell FX to Bank with Ref: test-4567890-098",
+          channel: 8,
+          source_account: "1300000002",
+          fx_rate: 620.0,
+          equ_amount: 620000.0,
+          rowid: 2,
+          destination_account: "1700000009",
+        },
+      ],
+      current_start_stop_flg: 1,
+      responseMessage: "Successful",
+      responseCode: "00",
+      current_fx_rate: 461.59,
     },
-    "action": "ActionButton"
-}
-]
+  },
+];
+
+export const UPDATE_SUCCESS_STOP = [
+  {
+    status: "success",
+    message: "Update Successful",
+    data: {
+      responseMessage: "Sell_fx module stopped successfully.",
+      responseCode: "00",
+    },
+  },
+];
+
+export const UPDATE_SUCCESS_START = [
+  {
+    status: "success",
+    message: "Update Successful",
+    data: {
+      responseMessage:
+        "Sell_fx module started successfully. Current rate is: 461.59",
+      responseCode: "00",
+    },
+  },
+];
+
+export const fxDataColumns = [
+  {
+    id: "source_account",
+    label: "Source",
+    minWidth: 70,
+  },
+  {
+    id: "destination_account",
+    label: "Beneficiary",
+    minWidth: 70,
+  },
+  {
+    id: "amount",
+    label: "Amount Sent",
+    minWidth: 70,
+  },
+  {
+    id: "equ_amount",
+    label: "Equivalent Amount",
+    minWidth: 70,
+  },
+  {
+    id: "fx_rate",
+    label: "FX Rate",
+    minWidth: 70,
+  },
+  {
+    id: "date_added",
+    label: "Date",
+    minWidth: 70,
+    format: (value) => dayjs(value.split(" ")[0]).format("DD-MM-YYYY"),
+  },
+  {
+    id: "action",
+    label: "Action",
+    minWidth: 50,
+  },
+];
