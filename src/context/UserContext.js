@@ -6,6 +6,9 @@ export const UserContext = createContext(null);
 
 const UserContextProvider = ({ children }) => {
   const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const [fxStatus, setfxStatus] = useState(false);
+  const [fxStatusIsLoading, setfxStatusIsLoading] = useState(true);
+  const [fxSocketStatus, setFxSocketStatus] = useState(false)
   const [snackbar, setSnackbar] = useState({
     open: false,
     severity: "success",
@@ -32,7 +35,18 @@ const UserContextProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, isLoggedOut, setIsLoggedOut, showToast }}
+      value={{
+        user,
+        isLoggedOut,
+        setIsLoggedOut,
+        showToast,
+        fxStatus,
+        setfxStatus,
+        fxStatusIsLoading,
+        setfxStatusIsLoading,
+        fxSocketStatus,
+        setFxSocketStatus,
+      }}
     >
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

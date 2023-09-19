@@ -30,7 +30,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const DateSearchFilter = () => {
-  const { data: FetchFx, isFetching, refetch } = useQuery({
+  const {
+    data: FetchFx,
+    isFetching,
+    refetch,
+  } = useQuery({
     queryKey: ["date-fetch-fx"],
     queryFn: () =>
       fetchFxFn({
@@ -48,7 +52,7 @@ const DateSearchFilter = () => {
 
   const handleSubmit = async (values, { resetForm }) => {
     // const { rawStartDate, rawEndDate } = values;
-    refetch()
+    refetch();
     // console.log("Search Values: ", ...rest);
   };
 
@@ -57,9 +61,6 @@ const DateSearchFilter = () => {
     validationSchema: validationSchema,
     onSubmit: handleSubmit,
   });
-
-  
-
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -93,10 +94,10 @@ const DateSearchFilter = () => {
         </div>
         <Button
           type="submit"
-          customStyle="w-[100px] inline-block rounded-[10px] px-2 text-black self-end h-[38px]"
+          customStyle="w-[100px] inline-block rounded-[10px] px-2 text-black self-end h-[38px] mb-1"
           variant="primary"
           // onClick={() => handlePopUp("start")}
-          onClick={console.log("I am clicked")}
+          // onClick={console.log("I am clicked")}
           isLoading={isFetching}
           disabled={!formik.values.rawEndDate}
         >

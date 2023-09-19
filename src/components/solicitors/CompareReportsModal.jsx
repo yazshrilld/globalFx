@@ -43,7 +43,7 @@ const CompareReportsModal = ({ open, createdRequest, handleClose, myRole }) => {
   });
 
   const report = formik.values.rejectedReport;
-  console.log("Formik Values: ", formik.values);
+  // console.log("Formik Values: ", formik.values);
 
   const csoRequest = [
     {

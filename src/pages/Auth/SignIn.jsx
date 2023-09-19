@@ -8,6 +8,7 @@ import { useSessionStorage } from "Hooks/useSessionStorage";
 import { useState, useEffect } from "react";
 import { ReactComponent as EyeOpenIcon } from "assets/svg/eye-open.svg";
 import { ReactComponent as EyeClosedIcon } from "assets/svg/eye-closed.svg";
+import io from "socket.io-client";
 import InputFormField from "components/InputFormField";
 import BaseButton from "components/BaseButton";
 import Checkbox from "@mui/material/Checkbox";
@@ -31,6 +32,8 @@ const SignIn = () => {
     "Legal Officer",
     "Team Lead, Legal Services",
   ];
+
+  // const socket = io.connect("http://192.168.52.173:4201");
 
   const handleSubmit = (values) => {
     if (
@@ -95,9 +98,9 @@ const SignIn = () => {
       setSessionStorage("uem", formik.values.userName);
       setSessionStorage("brc", data?.data?.braCode?.code);
       const branchCode = data?.data?.braCode?.code;
-      
-      STAFF_ROLE.includes(staffRole) && navigate("/app/dashboard");
 
+      STAFF_ROLE.includes(staffRole) && navigate("/app/dashboard");
+      // socket.emit("authenticate", data?.data?.token);
       return { branchCode };
       // navigate("/app/dashboard");
     },
