@@ -3,7 +3,8 @@ import Axios from "utils/axios";
 
 export const fetchFxFn = async ({ startdate, enddate }) => {
   const res = await Axios.get(
-    `/fetch?startdate=${dayjs(startdate).format('DD-MMM-YYYY')}&enddate=${dayjs(enddate).format('DD-MMM-YYYY')}`
+    `/fetch?startdate=11-Sep-2023&enddate=12-Sep-2023`
+    // `/fetch?startdate=${dayjs(startdate).format('DD-MMM-YYYY')}&enddate=${dayjs(enddate).format('DD-MMM-YYYY')}`
   );
   return res;
 };

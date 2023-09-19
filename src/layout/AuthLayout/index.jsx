@@ -22,12 +22,12 @@ const AuthLayout = () => {
         <Grid item xs={6}>
           <div className="px-6 pt-6 pb-10 mt-10 rounded-[10px]">
             <p className="text-3xl font-medium text-white max-w-[247px] mb-6">
-              Corporate Search Portal
+              FX Search Portal
             </p>
 
             <p className="text-lg mb-14 max-w-[415px] leading-[24px]">
               Experience efficiency and convenience with precise and up-to-date
-              results in one centralised portal.
+              fx transactions
             </p>
             <Avatar
               sx={{

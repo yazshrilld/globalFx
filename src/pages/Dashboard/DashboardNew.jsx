@@ -24,7 +24,7 @@ import { useSessionStorage } from "Hooks/useSessionStorage";
 import { fetchFxFn } from "utils/ApiFactory/fxTxApi";
 
 const DashboardNew = () => {
-  const { user } = useContext(UserContext);
+  const { user, fxStatus, fxStatusIsLoading } = useContext(UserContext);
   const solicitorId = user.solicitorId;
   // const staffBranch = user.branchCode;
   const userEmail = user.email || "ymusa@providusbank.com";
@@ -34,7 +34,7 @@ const DashboardNew = () => {
   const data = FXTX_DUMMY_DATA;
   const fxData = data[0]?.data?.blotter;
   // const myRole = resolveUserRoleAccess(user.role);
-  console.log("Length Of Fx :", fxData.length);
+  // console.log("Length Of Fx :", fxData.length);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -43,7 +43,9 @@ const DashboardNew = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const { getSessionStorage } = useSessionStorage;
   const fxValue = sessionStorage.getItem("start");
-  console.log({ fxValue });
+  // const fxStatus = sessionStorage.getItem("status");
+  // console.log({ fxValue, fxStatus });
+  const fxRates = sessionStorage.getItem("fxRate");
 
   // const [allSelectedRows, setAllSelectedRows] = useState([]);
   // const branchCode = sessionStorage.getItem("__brc");
@@ -63,25 +65,30 @@ const DashboardNew = () => {
     // 4: LegalOfficerDashboardTableColumns,
   };
 
-  const { data: FetchFx, isLoading } = useQuery({
-    queryKey: [
-      "fetch-fx-now",
-      {
-        // startdate: new Date(),
-        // enddate: new Date(),
-      },
-    ],
-    queryFn: () =>
-      fetchFxFn({
-        startdate: new Date(),
-        enddate: new Date(),
-      }),
-    select: (data) => {
-      const rate = data?.data?.data?.current_fx_rate
-      sessionStorage.setItem("fxRate", rate)
-      console.log("From Select: ", {rate, data });
-    },
-  });
+  // const { data, isLoading } = useQuery({
+  //   queryKey: [
+  //     "fetch-fx-now",
+  //     {
+  //       // startdate: new Date(),
+  //       // enddate: new Date(),
+  //     },
+  //   ],
+  //   queryFn: () =>
+  //     fetchFxFn({
+  //       startdate: new Date(),
+  //       enddate: new Date(),
+  //     }),
+  //   select: (data) => {
+  //     const rate = data?.data?.data?.current_fx_rate;
+  //     const fxBlotterData = data?.data?.data?.blotter?.map((itm) => ({
+  //       ...itm,
+  //       action : "ActionButton"
+  //     }))
+  //     sessionStorage.setItem("fxRate", rate);
+  //     console.log("From Select: ", { rate, data, fxBlotterData });
+  //     return {rate, fxBlotterData};
+  //   },
+  // });
 
   const toggleModal = (_, _1, row) => {
     setActiveCreatedRequest(row);
@@ -167,13 +174,18 @@ const DashboardNew = () => {
 
       <div className="bg-white rounded-[10px] mb-8">
         <div className="flex items-center justify-between px-8">
-          <div className="relative">
-            <h1 className="text-xl font-semibold">Dashboard</h1>
-            <button
-              className={`absolute right-0 top-0 -translate-y-2 translate-x-4 h-[12px] w-[12px]  border-2 border-solid border-blue rounded-[50%] ${
-                fxValue === "true" ? "bg-green-500" : "bg-red-500"
-              }`}
-            ></button>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <h1 className="text-xl font-semibold">Dashboard</h1>
+              <button
+                className={`absolute right-0 top-0 -translate-y-2 translate-x-4 h-[12px] w-[12px]  border-2 border-solid border-blue rounded-[50%] ${
+                  fxStatus ? "bg-green-500" : "bg-red-500"
+                }`}
+              ></button>
+            </div>
+            <div className="ml-5 font-medium border-l px-4">
+              FX STATUS: {fxStatus ? "ACTIVE" : "STOPPED"}
+            </div>
           </div>
           <div className="flex items-center justify-between pb-4 p-8 gap-14">
             <DateSearchFilter />
@@ -186,8 +198,8 @@ const DashboardNew = () => {
         } */}
 
         <BaseTable
-          // rows={[]}
           rows={fxData || []}
+          // rows={data?.fxBlotterData || []}
           columns={fxDataColumns}
           // columns={tableColumns[myRole]}
           page={page}
@@ -198,8 +210,8 @@ const DashboardNew = () => {
           setRowsPerPage={setRowsPerPage}
           actionOptions={["View Details"]}
           actionItemOnClick={toggleModal}
-          // totalPage={}
           totalPage={fxData?.length}
+          // totalPage={data?.fxBlotterData?.length}
           checkboxOnChange={checkboxOnChange}
           // allCheckboxOnChange={allCheckboxOnChange}
           search={search}

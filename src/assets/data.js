@@ -9,28 +9,7 @@ import { ReactComponent as Solicitors } from "assets/svg/contacts.svg";
 import dayjs from "dayjs";
 
 // initial form values for creating a request
-export const BusinessFormInitialValues = {
-  companyName: "",
-  rcNumber: "",
-  companyRegisteredAddress: "",
-  companyRegistrationDate: "",
-  document: {
-    cacDocument: "",
-    document2: "",
-    document3: "",
-    document4: "",
-    document5: "",
-  },
-  proprietorsName: "",
-  proprietorsRegisteredAddress: "",
-  secretaryName: "",
-  shareholdingStructure: "",
-  reason: "",
-  staffUsername: "",
-  companyType: "BUSINESS_NAME",
-  directors: [],
-  trustees: [],
-};
+
 
 export const LimitedLiabilityFormInitialValues = {
   companyName: "",
@@ -1690,6 +1669,7 @@ export const UPDATE_SUCCESS_START = [
   },
 ];
 
+let formats = new Intl.NumberFormat("en-GB")
 export const fxDataColumns = [
   {
     id: "source_account",
@@ -1705,16 +1685,19 @@ export const fxDataColumns = [
     id: "amount",
     label: "Amount Sent",
     minWidth: 70,
+    format: (val) => (<p>{`$${(val.toLocaleString("en-US"))}`}</p>),
   },
   {
     id: "equ_amount",
     label: "Equivalent Amount",
     minWidth: 70,
+    format: (val) => (<p>{`₦${(val.toLocaleString("en-US"))}`}</p>)
   },
   {
     id: "fx_rate",
     label: "FX Rate",
     minWidth: 70,
+    format: (val) => (<p>{`₦${(val.toLocaleString("en-US"))}`}</p>)
   },
   {
     id: "date_added",

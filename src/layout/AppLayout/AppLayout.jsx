@@ -1,7 +1,11 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import AccountMenu from "components/AccountMenu";
 import { UserContext } from "context/UserContext";
 import { useContext, useEffect, useState } from "react";
+import { resolveUserRoleAccess } from "utils/resolveUserRoleAccess";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFxFn } from "utils/ApiFactory/fxTxApi";
+import AccountMenu from "components/AccountMenu";
+import io from "socket.io-client";
 import "./AppLayout.styles.scss";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,19 +16,53 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import SideNav from "../SideNav/SideNav";
 import Button from "components/BaseButton";
-import { resolveUserRoleAccess } from "utils/resolveUserRoleAccess";
 import axios from "axios";
 
+// import Loa
+
 const AppLayout = ({ handleSelection }) => {
-  const { user, showToast } = useContext(UserContext);
+  const {
+    user,
+    showToast,
+    fxStatus,
+    setfxStatus,
+    fxStatusIsLoading,
+    setfxStatusIsLoading,
+    fxSocketStatus,
+    setFxSocketStatus,
+  } = useContext(UserContext);
   const staff = user.username;
   const userRole = sessionStorage.getItem("__role");
   const myRole = resolveUserRoleAccess(userRole);
   const token = sessionStorage.getItem("__tk");
   const baseURL = process.env.REACT_APP_TEST_BASE_URL;
-  console.log({ baseURL });
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  // const socket = io.connect("http://127.0.0.1:4201")
+  const socket = io.connect("http://192.168.52.173:4201");
+
+  // let ToggleTrad = {
+  //   updated_by: "ymusa",
+  //   start_stop_flg: 1,
+  // };
+
+  let ToggleTradStart = {
+    updated_by: "ymusa",
+    start_stop_flg: 1,
+  };
+
+  let ToggleTradStop = {
+    updated_by: "ymusa",
+    start_stop_flg: 0,
+  };
+
+  const sendStatus = () => {
+    // socket.emit("authenticate", token);
+    socket.emit('TradeAction', ToggleTradStart);
+  };
+  
+  console.log("My AppLayout: ", fxStatus)
 
   const [showPopUp, setShowPopUp] = useState({
     open: false,
@@ -36,109 +74,145 @@ const AppLayout = ({ handleSelection }) => {
   });
   const [msg, setMsg] = useState("");
   const fxRates = sessionStorage.getItem("fxRate");
-  
+  const [isSelected, setIsSelected] = useState("");
+  const [selected, setSelected] = useState({
+    issSelected: "",
+    isSuccess: false,
+  });
+
+  // const startFxFn = async () => {
+  //   const trimStr = (str) => {
+  //     if (str !== null && str !== undefined) {
+  //       return str.trim();
+  //     }
+  //     return "";
+  //   };
+  //   const url = `${baseURL}/start_stop`;
+  //   const payload = {
+  //     updated_by: staff,
+  //     start_stop_flg: 1,
+  //   };
+  //   setApiRequest((prevS) => ({
+  //     ...prevS,
+  //     isStartLoading: true,
+  //   }));
+  //   try {
+  //     const res = await axios.post(url, payload, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     });
+  //     if (res) {
+  //       console.log({ res });
+  //       const successMessage = res?.data?.data?.responseMessage;
+  //       if (showPopUp.type === "start") {
+  //         showToast({
+  //           severity: "success",
+  //           message: "Fx has succesfully started",
+  //         });
+  //         setShowPopUp({
+  //           open: false,
+  //           type: "",
+  //         });
+  //         setSelected((prevS) => ({
+  //           ...prevS,
+  //           isSuccess: true,
+  //         }));
+  //         setfxStatus(true);
+  //       }
+  //       sessionStorage.setItem("start", true);
+  //       sessionStorage.setItem("status", "Active");
+  //       setMsg((prevS) => ({
+  //         ...prevS,
+  //         msg: trimStr(successMessage),
+  //       }));
+  //     }
+  //   } catch (error) {
+  //     if (error) {
+  //       console.log("First Error: ", { error });
+  //       showToast({
+  //         severity: "error",
+  //         message:
+  //           error?.response?.data?.data?.responseMessage ||
+  //           "Could not process request.",
+  //       });
+  //     }
+  //   } finally {
+  //     setApiRequest((prevS) => ({
+  //       ...prevS,
+  //       isStartLoading: false,
+  //     }));
+  //   }
+  // };
+
+  // const stopFxFn = async () => {
+  //   const url = `${baseURL}/start_stop`;
+  //   const payload = {
+  //     updated_by: staff,
+  //     start_stop_flg: 0,
+  //   };
+  //   setApiRequest((prevS) => ({
+  //     ...prevS,
+  //     isStopLoading: true,
+  //   }));
+  //   try {
+  //     const res = await axios.post(url, payload, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     });
+  //     if (res) {
+  //       console.log({ res });
+  //       if (showPopUp.type === "stop") {
+  //         showToast({
+  //           severity: "success",
+  //           message: "Fx has succesfully stopped",
+  //         });
+  //         setShowPopUp({
+  //           open: false,
+  //           type: "",
+  //         });
+  //         setSelected((prevS) => ({
+  //           ...prevS,
+  //           isSuccess: false,
+  //         }));
+  //         setfxStatus(false);
+  //       }
+  //       sessionStorage.setItem("start", false);
+  //       sessionStorage.setItem("status", "Stop");
+  //     }
+  //   } catch (error) {
+  //     if (error) {
+  //       console.log("First Error: ", { error });
+  //       showToast({
+  //         severity: "error",
+  //         message:
+  //           error?.response?.data?.data?.responseMessage ||
+  //           "Could not process request.",
+  //       });
+  //     }
+  //   } finally {
+  //     setApiRequest((prevS) => ({
+  //       ...prevS,
+  //       isStopLoading: false,
+  //     }));
+  //   }
+  // };
+  //WORKING CODE HERE
+  // const handleIsToggle = () => {
+  //   if (fxStatus) {
+  //     handlePopUp("stop");
+  //   } else {
+  //     handlePopUp("start");
+  //   }
+  // };
 
 
-  const startFxFn = async () => {
-    const trimStr = (str) => {
-      if (str != null && str != undefined) {
-        return str.trim();
-      }
-      return "";
-    };
-    const url = `${baseURL}/start_stop`;
-    const payload = {
-      updated_by: staff,
-      start_stop_flg: 1,
-    };
-    setApiRequest((prevS) => ({
-      ...prevS,
-      isStartLoading: true,
-    }));
-    try {
-      const res = await axios.post(url, payload, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res) {
-        console.log({ res });
-        const successMessage = res?.data?.data?.responseMessage;
-        if (showPopUp.type === "start") {
-          showToast({
-            severity: "success",
-            message: "Fx has succesfully started",
-          });
-          setShowPopUp({
-            open: false,
-            type: "",
-          });
-        }
-        sessionStorage.setItem("start", true);
-        setMsg((prevS) => ({
-          ...prevS,
-          msg: trimStr(successMessage),
-        }));
-      }
-    } catch (error) {
-      if (error) {
-        console.log("First Error: ", {error});
-        showToast({
-          severity: "error",
-          message: error?.response?.data?.data?.responseMessage || "Could not process request.",
-        });
-      }
-    } finally {
-      setApiRequest((prevS) => ({
-        ...prevS,
-        isStartLoading: false,
-      }));
-    }
-  };
-
-  const stopFxFn = async () => {
-    const url = `${baseURL}/start_stop`;
-    const payload = {
-      updated_by: staff,
-      start_stop_flg: 0,
-    };
-    setApiRequest((prevS) => ({
-      ...prevS,
-      isStopLoading: true,
-    }));
-    try {
-      const res = await axios.post(url, payload, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res) {
-        console.log({ res });
-        if (showPopUp.type === "stop") {
-          showToast({
-            severity: "success",
-            message: "Fx has succesfully stopped",
-          });
-          setShowPopUp({
-            open: false,
-            type: "",
-          });
-        }
-        sessionStorage.setItem("start", false);
-      }
-    } catch (error) {
-      if (error) {
-        console.log("First Error: ", {error});
-        showToast({
-          severity: "error",
-          message: error?.response?.data?.data?.responseMessage || "Could not process request.",
-        });
-      }
-    } finally {
-      setApiRequest((prevS) => ({
-        ...prevS,
-        isStartLoading: false,
-      }));
+  const handleIsToggle = () => {
+    if (fxStatus) {
+      handlePopUp("stop");
+    } else {
+      handlePopUp("start");
     }
   };
 
@@ -149,13 +223,31 @@ const AppLayout = ({ handleSelection }) => {
     });
   };
 
-  const handleStartorStop = () => {
-    if (showPopUp.type === "start") {
-      return startFxFn();
-    } else {
-      return stopFxFn();
-    }
-  };
+  // const startFxAndSocket = () => {
+  //   startFxFn();
+  //   sendStatus();
+  // }
+
+  // const stopFxAndSocket = () => {
+  //   stopFxFn();
+  //   sendStatus();
+  // }
+
+  // const handleStartorStop = () => {
+  //   if (showPopUp.type === "start") {
+  //     return startFxFn();
+  //   } else {
+  //     return stopFxFn();
+  //   }
+  // };
+
+  // const handleStartorStop = () => {
+  //   if (showPopUp.type === "start") {
+  //     return startFxAndSocket();
+  //   } else {
+  //     return stopFxAndSocket();
+  //   }
+  // };
 
   useEffect(() => {
     if (!user?.exp || user.exp * 1000 < Date.now()) {
@@ -165,8 +257,21 @@ const AppLayout = ({ handleSelection }) => {
     }
   }, [pathname, navigate, user.exp]);
 
-  console.log("length: ", msg.length);
+  const { isLoading } = useQuery({
+    queryKey: ["fetch-fx-now"],
+    queryFn: () =>
+      fetchFxFn({
+        startdate: new Date(),
+        enddate: new Date(),
+      }),
+    onSuccess: (data) => {
+      const status = data.data.data.current_start_stop_flg > 0;
+      setfxStatus(status);
+      setfxStatusIsLoading(false);
+    },
+  });
 
+  // console.log({selected});
   return (
     <Grid container>
       <Grid
@@ -210,32 +315,37 @@ const AppLayout = ({ handleSelection }) => {
             <Button
               variant="warning"
               customStyle="px-8 h-auto py-1 rounded-[4px] text-[14px]"
-              onClick={() => setShowPopUp({ open: false, type: "" })}
+              onClick={() =>
+                setShowPopUp({ open: false, type: showPopUp.type })
+              }
               // onClick={rejectReport}
             >
               No
             </Button>
             <Button
-              isLoading={apiRequest.isStartLoading}
+              isLoading={apiRequest.isStartLoading || apiRequest.isStopLoading}
               variant={`${showPopUp.type === "stop" ? "error" : "success"}`}
               customStyle="px-8 h-auto py-1 rounded-[4px] text-[14px]"
-              onClick={handleStartorStop}
+              onClick={() => console.log("I am clicked")}
+              // onClick={handleStartorStop}
             >
               Yes
             </Button>
           </DialogActions>
         </Dialog>
-        <Box className="nav-bar bg-blue-500">
+        <Box className="nav-bar bg-blue-500 shadow-md">
+
           {myRole === 4 && (
             <div className="flex items-center gap-3">
               <Button
                 type="submit"
                 customStyle="w-[100px] inline-block rounded-[10px] px-2 text-black self-end h-[38px]"
                 variant="success"
-                onClick={() => handlePopUp("start")}
+                // onClick={() => handlePopUp("start")}
+                onClick={sendStatus}
                 disabled={false}
               >
-                Start Fx
+                Socket
               </Button>
               <Button
                 type="submit"
@@ -246,10 +356,30 @@ const AppLayout = ({ handleSelection }) => {
               >
                 Stop Fx
               </Button>
+
+              <div
+                onClick={handleIsToggle}
+                // onClick={() => setIsSelected(!isSelected)}
+                className={`flex w-10 h-5 rounded-full transition-all duration-500 ${
+                  // selected.isSuccess ? "bg-green-500" : "bg-gray-500"
+                  fxStatus ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
+                <span
+                  className={`h-5 w-5 bg-gray-50 cursor-pointer rounded-full transition-all duration-500 shadow-2xl ${
+                    fxStatus ? "ml-5" : ""
+                  }`}
+                ></span>
+              </div>
             </div>
           )}
-          <div className="ml-5 p-[16px_20px] bg-transparent rounded-[10px] shadow-md font-medium">
-            FX_RATE: {fxRates}
+          
+          <div
+            className={`ml-5 p-[16px_20px] bg-transparent rounded-[10px] shadow-md font-medium ${
+              !fxStatus ? "line-through" : ""
+            }`}
+          >
+            FX RATE: {`₦${fxRates}`}
           </div>
           <Box className="nav-bar-user-profile-notification ml-auto">
             <Box className="nav-bar-accountMenu top-0 sticky">

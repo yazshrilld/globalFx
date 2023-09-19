@@ -37,7 +37,7 @@ export default function BaseTable({
     setPage(0);
   };
 
-  console.log("MyRowsPagePer: ", rowsPerPage);
+  // console.log("MyRowsPagePer: ", rowsPerPage);
 
   const handleCheckboxChange = (data) => {
     checkboxOnChange(data);
@@ -92,13 +92,15 @@ export default function BaseTable({
                 There are no records for this table yet
               </p>
             ) : (
-              rows
-                ?.filter((item) => {
-                  return search?.trim()?.length > 0
-                    ? item?.[filterKey]?.toLowerCase()?.includes(search)
-                    : item;
-                })
-                ?.map((row, index) => {
+              (rows ?? [])
+                // ?.filter((item) => {
+                //   return search?.trim()?.length > 0
+                //     ? item?.[filterKey]?.toLowerCase()?.includes(search)
+                //     : item;
+                // })
+                // ?
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       {showCheckbox && (
@@ -154,9 +156,7 @@ export default function BaseTable({
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
       >
-{
-  console.log({totalPage, rows})
-}
+        {}
       </TablePagination>
     </div>
   );
